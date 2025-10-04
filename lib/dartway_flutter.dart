@@ -13,8 +13,11 @@ export 'src/ui_kit/layout_widgets/infinite_list_view/domain/dw_infinite_list_vie
 export 'src/ui_kit/layout_widgets/infinite_list_view/domain/dw_infinite_list_view_grouped_item.dart';
 export 'src/ui_kit/base_widgets/multi_link_text.dart';
 export 'src/ui_kit/layout_widgets/dw_device_frame.dart';
-export 'src/ui_kit/interfaces/dw_text_style_preset.dart';
-export 'src/ui_kit/dw_flutter_theme.dart';
+export 'src/ui_kit/theme/dw_text_style_preset.dart';
+export 'src/ui_kit/base_widgets/dw_button/dw_button.dart';
+export 'src/ui_kit/base_widgets/dw_button/dw_button_style_preset.dart';
+export 'src/ui_kit/base_widgets/dw_button/dw_button_style_preset_extension.dart';
+export 'src/ui_kit/theme/dw_flutter_theme.dart';
 export 'src/ui_kit/base_widgets/dw_text.dart';
 export 'package:conditional_parent_widget/conditional_parent_widget.dart';
 
