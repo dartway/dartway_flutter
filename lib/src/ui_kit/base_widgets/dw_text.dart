@@ -1,22 +1,22 @@
 import 'package:dartway_flutter/dartway_flutter.dart';
 import 'package:flutter/material.dart';
 
-extension DwTextStylePresetExtension on DwTextStylePreset {
-  Widget call(
-    String text, {
-    TextAlign? textAlign,
-    int? maxLines,
-    TextOverflow? overflow,
-    bool? softWrap,
-  }) => DwText(
-    text,
-    textStyle: this,
-    textAlign: textAlign,
-    maxLines: maxLines,
-    overflow: overflow,
-    softWrap: softWrap,
-  );
-}
+// extension DwTextStylePresetExtension on DwTextStylePreset {
+//   Widget call(
+//     String text, {
+//     TextAlign? textAlign,
+//     int? maxLines,
+//     TextOverflow? overflow,
+//     bool? softWrap,
+//   }) => DwText(
+//     text,
+//     textStyle: this,
+//     textAlign: textAlign,
+//     maxLines: maxLines,
+//     overflow: overflow,
+//     softWrap: softWrap,
+//   );
+// }
 
 class DwText extends StatelessWidget {
   final String data;

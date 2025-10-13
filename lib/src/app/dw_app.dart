@@ -20,19 +20,21 @@ class DwApp {
   final DwConfig dwConfig;
 
   final DwAppLoadingOptions appLoadingOptions;
-  final DwFlutterAppOptions flutterAppOptions;
+  final DwFlutterAppOptions _flutterAppOptions;
   final DwRoutingConfig routingOptions;
+
+  final Function(BuildContext context, Widget child)? appWrapper;
 
   DwApp({
     this.title = 'Dart Way App',
     required this.routerProvider,
     this.appInitializers,
-
+    this.appWrapper,
     this.routingOptions = const DwRoutingConfig(),
     this.dwConfig = const DwConfig(),
     this.appLoadingOptions = const DwAppLoadingOptions.withNativeSplash(),
     DwFlutterAppOptions? flutterAppOptions,
-  }) : flutterAppOptions = flutterAppOptions ?? DwFlutterAppOptions();
+  }) : _flutterAppOptions = flutterAppOptions ?? DwFlutterAppOptions();
 
   void _preInit() {
     final binding = WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +51,7 @@ class DwApp {
 
     final allInitializers = <DwAppInitializer>[
       (_) async {
-        for (final locale in flutterAppOptions.supportedLocales) {
+        for (final locale in _flutterAppOptions.supportedLocales) {
           await initializeDateFormatting(locale.languageCode);
         }
         return true;
@@ -70,7 +72,8 @@ class DwApp {
           routerProvider: routerProvider,
           appInitializers: allInitializers,
           appLoadingOptions: appLoadingOptions,
-          flutterAppOptions: flutterAppOptions,
+          flutterAppOptions: _flutterAppOptions,
+          appWrapper: appWrapper,
         ),
       ),
     );
@@ -81,6 +84,7 @@ class _DartWayApp extends ConsumerStatefulWidget {
   final String title;
   final ProviderBase<RouterConfig<Object>> routerProvider;
   final List<DwAppInitializer> appInitializers;
+  final Function(BuildContext context, Widget child)? appWrapper;
 
   final DwFlutterAppOptions flutterAppOptions;
   final DwAppLoadingOptions appLoadingOptions;
@@ -91,6 +95,7 @@ class _DartWayApp extends ConsumerStatefulWidget {
     required this.appInitializers,
     required this.flutterAppOptions,
     required this.appLoadingOptions,
+    this.appWrapper,
   });
 
   @override
@@ -125,33 +130,41 @@ class _DartWayAppWidgetState extends ConsumerState<_DartWayApp> {
     if (_failed) return widget.appLoadingOptions.errorScreen;
     if (!_initialized) return widget.appLoadingOptions.loadingScreen;
 
-    final router = ref.watch(widget.routerProvider);
+    final routerApp = Consumer(
+      builder: (context, ref, _) {
+        final router = ref.watch(widget.routerProvider);
+
+        return MaterialApp.router(
+          routerConfig: router,
+          debugShowCheckedModeBanner:
+              widget.flutterAppOptions.debugShowCheckedModeBanner,
+          title: widget.title,
+          theme: widget.flutterAppOptions.theme,
+          darkTheme: widget.flutterAppOptions.darkTheme,
+          themeMode: widget.flutterAppOptions.themeMode,
+          scrollBehavior: widget.flutterAppOptions.scrollBehavior,
+          restorationScopeId: widget.flutterAppOptions.restorationScopeId,
+          builder: widget.flutterAppOptions.builder,
+          supportedLocales: widget.flutterAppOptions.supportedLocales,
+          localizationsDelegates:
+              widget.flutterAppOptions.localizationDelegates,
+          localeResolutionCallback:
+              widget.flutterAppOptions.localeResolutionCallback,
+          localeListResolutionCallback:
+              widget.flutterAppOptions.localeListResolutionCallback,
+        );
+      },
+    );
+
+    // 👇 оборачиваем routerApp во wrapper, если он есть
+    final wrappedApp =
+        widget.appWrapper != null
+            ? widget.appWrapper!(context, routerApp)
+            : routerApp;
 
     return DwNotificationsListener(
-      handlers: {
-        DwUiNotification: DwUiNotificationHandler(),
-        // другие типы можно добавлять сюда
-      },
-      child: MaterialApp.router(
-        // scaffoldMessengerKey: DwNotificationsListener.messengerKey,
-        routerConfig: router,
-
-        debugShowCheckedModeBanner:
-            widget.flutterAppOptions.debugShowCheckedModeBanner,
-        title: widget.title,
-        theme: widget.flutterAppOptions.theme,
-        darkTheme: widget.flutterAppOptions.darkTheme,
-        themeMode: widget.flutterAppOptions.themeMode,
-        scrollBehavior: widget.flutterAppOptions.scrollBehavior,
-        restorationScopeId: widget.flutterAppOptions.restorationScopeId,
-        builder: widget.flutterAppOptions.builder,
-        supportedLocales: widget.flutterAppOptions.supportedLocales,
-        localizationsDelegates: widget.flutterAppOptions.localizationDelegates,
-        localeResolutionCallback:
-            widget.flutterAppOptions.localeResolutionCallback,
-        localeListResolutionCallback:
-            widget.flutterAppOptions.localeListResolutionCallback,
-      ),
+      handlers: {DwUiNotification: DwUiNotificationHandler()},
+      child: wrappedApp,
     );
   }
 }
