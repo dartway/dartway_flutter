@@ -19,7 +19,7 @@ import 'package:flutter/material.dart';
 // }
 
 class DwText extends StatelessWidget {
-  final String data;
+  final String text;
   final DwTextStylePreset textStyle;
 
   // Common text options
@@ -31,7 +31,7 @@ class DwText extends StatelessWidget {
   // Base private constructor — fields are the same for all styles.
   // Style constructors remain const.
   const DwText(
-    this.data, {
+    this.text, {
     required this.textStyle,
     this.textAlign,
     this.maxLines,
@@ -43,7 +43,7 @@ class DwText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      data,
+      text,
       style: textStyle.resolveStyle(context),
       textAlign: textAlign,
       maxLines: maxLines,
