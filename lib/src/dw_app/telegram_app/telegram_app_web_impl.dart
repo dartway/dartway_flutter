@@ -9,6 +9,8 @@ class TelegramAppImpl implements TelegramApp {
 
   @override
   Future<void> init(DwTelegramWebAppConfig telegramWebAppConfig) async {
+    print('TelegramAppImpl init');
+
     try {
       if (!TelegramWebApp.instance.isSupported) return;
     } catch (_) {
