@@ -10,11 +10,18 @@ class _DwServices {
   late SharedPreferences _prefs;
   SharedPreferences get sharedPreferences => _prefs;
 
+  late final TelegramApp _telegramWebApp;
+
   // DotEnv get dotEnv => dotenv;
 
   _init({required DwConfig config}) async {
     if (config.useSharedPreferences) {
       _prefs = await SharedPreferences.getInstance();
+    }
+
+    if (config.telegramWebAppConfig != null) {
+      _telegramWebApp = const TelegramAppImpl();
+      await _telegramWebApp.init(config.telegramWebAppConfig!);
     }
 
     // if (config.flutterDotEnvFile != null) {

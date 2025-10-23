@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:dartway_flutter/dartway_flutter.dart';
 import 'package:dartway_flutter/src/notifications/service/dw_notifications_controller.dart';
 import 'package:flutter/material.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'telegram_app/telegram_app.dart';
 
 part 'parts/dw_navigation.dart';
 part 'parts/dw_notifications.dart';
@@ -14,6 +15,7 @@ final dw = _Dw();
 
 class _Dw {
   late final DwConfig _config;
+  bool isInitialized = false;
 
   final notify = _DwNotifications._();
   final services = _DwServices._();
@@ -24,11 +26,18 @@ class _Dw {
 
     _config = config;
 
-    return true;
+    isInitialized = true;
+
+    return isInitialized;
   }
 
   void handleError(Object error, StackTrace stackTrace) {
-    _config.globalErrorHandler?.call(error, stackTrace);
+    if (!isInitialized) {
+      debugPrint(error.toString());
+      debugPrint(stackTrace.toString());
+    } else {
+      _config.globalErrorHandler?.call(error, stackTrace);
+    }
   }
 
   bool get isDefaultModelsGetterSetUp => _config.defaultModelGetter != null;
