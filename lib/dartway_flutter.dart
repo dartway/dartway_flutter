@@ -21,6 +21,7 @@ export 'src/ui_kit/layout_widgets/infinite_list_view/domain/dw_infinite_list_vie
 export 'src/ui_kit/layout_widgets/infinite_list_view/domain/dw_infinite_list_view_grouped_item.dart';
 // UI Components
 export 'src/ui_kit/layout_widgets/infinite_list_view/infinite_list_view.dart';
+export 'src/ui_kit/theme/dw_color_preset.dart';
 export 'src/ui_kit/theme/dw_flutter_theme.dart';
 export 'src/ui_kit/theme/dw_text_style_preset.dart';
 export 'src/utils/dw_async_value_extension.dart';
