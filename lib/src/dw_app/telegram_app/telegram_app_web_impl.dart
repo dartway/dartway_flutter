@@ -46,6 +46,8 @@ class TelegramAppImpl implements TelegramApp {
           );
         }
 
+        TelegramWebApp.instance.requestFullscreen();
+
         return;
       } catch (e) {
         debugPrint("Telegram WebApp init error: $e");
