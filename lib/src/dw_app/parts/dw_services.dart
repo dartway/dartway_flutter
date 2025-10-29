@@ -11,6 +11,7 @@ class _DwServices {
   SharedPreferences get sharedPreferences => _prefs;
 
   late final TelegramApp _telegramWebApp;
+  TelegramApp get telegramWebApp => _telegramWebApp;
 
   // DotEnv get dotEnv => dotenv;
 

@@ -36,17 +36,16 @@ class TelegramAppImpl implements TelegramApp {
     for (var i = 0; i < 3; i++) {
       try {
         TelegramWebApp.instance.ready();
+        await Future.delayed(Duration(milliseconds: 100 * i));
         if (telegramWebAppConfig.disableVerticalSwipes) {
           TelegramWebApp.instance.disableVerticalSwipes();
         }
         if (telegramWebAppConfig.expand) {
-          await Future.delayed(
-            Duration(milliseconds: 100 * i),
-            TelegramWebApp.instance.expand,
-          );
+          TelegramWebApp.instance.expand();
         }
-
-        TelegramWebApp.instance.requestFullscreen();
+        if (telegramWebAppConfig.requestFullScreen) {
+          TelegramWebApp.instance.requestFullscreen();
+        }
 
         return;
       } catch (e) {
