@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+
 import 'package:dartway_flutter/dartway_flutter.dart';
+import 'package:flutter/material.dart';
 
 /// UI-aware async action with error handling, notifications,
 /// and follow-up callbacks.
@@ -14,7 +15,7 @@ class DwUiAction<T> {
   Future<T?> call(BuildContext context) => _execute(context);
 
   factory DwUiAction.create(
-    FutureOr<T> Function() action, {
+    FutureOr<T> Function(BuildContext context) action, {
     String? onSuccessNotification,
     String? onErrorNotification,
     FutureOr<DwUiNotification?> Function(T value)? customNotificationBuilder,
@@ -24,7 +25,7 @@ class DwUiAction<T> {
   }) {
     return DwUiAction._((context) async {
       try {
-        final value = await action();
+        final value = await action(context);
 
         if (onSuccessNotification != null) {
           dw.notify.success(onSuccessNotification);

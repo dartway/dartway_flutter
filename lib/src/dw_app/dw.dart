@@ -56,7 +56,7 @@ class _Dw {
   }
 
   DwUiAction<T> action<T>(
-    FutureOr<T> Function() action, {
+    FutureOr<T> Function(BuildContext context) action, {
     FutureOr<void> Function(BuildContext mountedContext, T actionResult)?
     followUpIfMountedAction,
     String? onSuccessNotification,
