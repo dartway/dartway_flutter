@@ -23,20 +23,27 @@ extension DwAsyncValueX<T> on AsyncValue<T> {
       loading: () {
         if (loadingWidget != null) return loadingWidget;
 
-        if (loadingValue == null && !dw.isDefaultModelsGetterSetUp) {
-          return const SizedBox.shrink();
-        }
-
-        final fakeData =
-            loadingValue ?? (null is T ? null as T : dw.getDefaultModel<T>());
+        final fakeData = loadingValue ?? (null is T ? null as T : dw.getDefaultModel<T>());
 
         final built = childBuilder(fakeData);
 
+        final isBuiltSliver =
+            built is SliverList || built is SliverGrid || built is SliverToBoxAdapter || built is SliverPadding;
+
+        if (loadingValue == null && !dw.isDefaultModelsGetterSetUp) {
+          // 🧠 если дочерний виджет — sliver, используем SliverSkeletonizer
+          if (isBuiltSliver) {
+            return SliverToBoxAdapter(
+              child: const SizedBox.shrink(),
+            );
+          }
+
+          // 🧩 иначе обычный box-режим
+          return const SizedBox.shrink();
+        }
+
         // 🧠 если дочерний виджет — sliver, используем SliverSkeletonizer
-        if (built is SliverList ||
-            built is SliverGrid ||
-            built is SliverToBoxAdapter ||
-            built is SliverPadding) {
+        if (isBuiltSliver) {
           return SliverSkeletonizer(enabled: true, child: built);
         }
 
