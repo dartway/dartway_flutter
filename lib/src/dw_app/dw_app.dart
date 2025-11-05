@@ -129,42 +129,35 @@ class _DartWayAppWidgetState extends ConsumerState<_DartWayApp> {
   Widget build(BuildContext context) {
     if (_failed) return widget.appLoadingOptions.errorScreen;
     if (!_initialized) return widget.appLoadingOptions.loadingScreen;
-
-    final routerApp = Consumer(
+    return Consumer(
       builder: (context, ref, _) {
         final router = ref.watch(widget.routerProvider);
 
         return MaterialApp.router(
           routerConfig: router,
-          debugShowCheckedModeBanner:
-              widget.flutterAppOptions.debugShowCheckedModeBanner,
+          debugShowCheckedModeBanner: widget.flutterAppOptions.debugShowCheckedModeBanner,
           title: widget.title,
           theme: widget.flutterAppOptions.theme,
           darkTheme: widget.flutterAppOptions.darkTheme,
           themeMode: widget.flutterAppOptions.themeMode,
           scrollBehavior: widget.flutterAppOptions.scrollBehavior,
           restorationScopeId: widget.flutterAppOptions.restorationScopeId,
-          builder: widget.flutterAppOptions.builder,
           supportedLocales: widget.flutterAppOptions.supportedLocales,
-          localizationsDelegates:
-              widget.flutterAppOptions.localizationDelegates,
-          localeResolutionCallback:
-              widget.flutterAppOptions.localeResolutionCallback,
-          localeListResolutionCallback:
-              widget.flutterAppOptions.localeListResolutionCallback,
+          localizationsDelegates: widget.flutterAppOptions.localizationDelegates,
+          localeResolutionCallback: widget.flutterAppOptions.localeResolutionCallback,
+          localeListResolutionCallback: widget.flutterAppOptions.localeListResolutionCallback,
+          builder:
+              // 👇 оборачиваем routerApp во wrapper, если он есть
+              (context, child) => ConditionalParentWidget(
+                condition: widget.appWrapper != null,
+                parentBuilder: (child) => widget.appWrapper!(context, child),
+                child: DwNotificationsListener(
+                  handlers: {DwUiNotification: DwUiNotificationHandler()},
+                  child: widget.flutterAppOptions.builder?.call(context, child) ?? child ?? SizedBox.shrink(),
+                ),
+              ),
         );
       },
-    );
-
-    // 👇 оборачиваем routerApp во wrapper, если он есть
-    final wrappedApp =
-        widget.appWrapper != null
-            ? widget.appWrapper!(context, routerApp)
-            : routerApp;
-
-    return DwNotificationsListener(
-      handlers: {DwUiNotification: DwUiNotificationHandler()},
-      child: wrappedApp,
     );
   }
 }
