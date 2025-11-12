@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dartway_flutter/dartway_flutter.dart';
+import 'package:dartway_flutter/src/ui_kit/theme/dw_app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,11 +15,9 @@ typedef DwAppInitializer = FutureOr<bool> Function(WidgetRef ref);
 class DwApp {
   final String title;
   final ProviderBase<RouterConfig<Object>> routerProvider;
-
+  final ProviderBase<DwAppTheme> themeProvider;
   final List<DwAppInitializer>? appInitializers;
-
   final DwConfig dwConfig;
-
   final DwAppLoadingOptions appLoadingOptions;
   final DwFlutterAppOptions _flutterAppOptions;
   final DwRoutingConfig routingOptions;
@@ -28,6 +27,7 @@ class DwApp {
   DwApp({
     this.title = 'Dart Way App',
     required this.routerProvider,
+    required this.themeProvider,
     this.appInitializers,
     this.appWrapper,
     this.routingOptions = const DwRoutingConfig(),
@@ -70,6 +70,7 @@ class DwApp {
         child: _DartWayApp(
           title: title,
           routerProvider: routerProvider,
+          themeProvider: themeProvider,
           appInitializers: allInitializers,
           appLoadingOptions: appLoadingOptions,
           flutterAppOptions: _flutterAppOptions,
@@ -83,6 +84,7 @@ class DwApp {
 class _DartWayApp extends ConsumerStatefulWidget {
   final String title;
   final ProviderBase<RouterConfig<Object>> routerProvider;
+  final ProviderBase<DwAppTheme> themeProvider;
   final List<DwAppInitializer> appInitializers;
   final Function(BuildContext context, Widget child)? appWrapper;
 
@@ -95,6 +97,7 @@ class _DartWayApp extends ConsumerStatefulWidget {
     required this.appInitializers,
     required this.flutterAppOptions,
     required this.appLoadingOptions,
+    required this.themeProvider,
     this.appWrapper,
   });
 
@@ -133,15 +136,16 @@ class _DartWayAppWidgetState extends ConsumerState<_DartWayApp> {
     final routerApp = Consumer(
       builder: (context, ref, _) {
         final router = ref.watch(widget.routerProvider);
+        final dwTheme = ref.watch(widget.themeProvider);
 
         return MaterialApp.router(
           routerConfig: router,
           debugShowCheckedModeBanner:
               widget.flutterAppOptions.debugShowCheckedModeBanner,
           title: widget.title,
-          theme: widget.flutterAppOptions.theme,
-          darkTheme: widget.flutterAppOptions.darkTheme,
-          themeMode: widget.flutterAppOptions.themeMode,
+          theme: dwTheme.theme,
+          darkTheme: dwTheme.darkTheme,
+          themeMode: dwTheme.themeMode,
           scrollBehavior: widget.flutterAppOptions.scrollBehavior,
           restorationScopeId: widget.flutterAppOptions.restorationScopeId,
           builder: widget.flutterAppOptions.builder,

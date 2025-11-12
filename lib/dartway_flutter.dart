@@ -27,5 +27,6 @@ export 'src/ui_kit/theme/dw_text_style_preset.dart';
 export 'src/utils/dw_async_value_extension.dart';
 export 'src/utils/dw_build_async_list_value_extension.dart';
 export 'src/utils/dw_build_context_extension.dart';
+export 'src/ui_kit/theme/dw_app_theme.dart';
 // Utilities
 export 'src/utils/dw_ui_action.dart';

@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 class DwFlutterAppOptions {
-  final ThemeData? theme;
-  final ThemeData? darkTheme;
-  final ThemeMode themeMode;
+  
   final ScrollBehavior? scrollBehavior;
   final String? restorationScopeId;
   final bool debugShowCheckedModeBanner;
@@ -17,9 +15,6 @@ class DwFlutterAppOptions {
   final Widget Function(BuildContext, Widget?)? builder;
 
   DwFlutterAppOptions({
-    this.theme,
-    this.darkTheme,
-    this.themeMode = ThemeMode.system,
     ScrollBehavior? scrollBehavior,
     this.restorationScopeId,
     this.debugShowCheckedModeBanner = false,
