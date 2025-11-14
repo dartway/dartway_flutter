@@ -148,7 +148,18 @@ class _DartWayAppWidgetState extends ConsumerState<_DartWayApp> {
           themeMode: dwTheme.themeMode,
           scrollBehavior: widget.flutterAppOptions.scrollBehavior,
           restorationScopeId: widget.flutterAppOptions.restorationScopeId,
-          builder: widget.flutterAppOptions.builder,
+          builder: (context, child) {
+            final wrappedWithNotifications = DwNotificationsListener(
+              handlers: {DwUiNotification: DwUiNotificationHandler()},
+              child: child!,
+            );
+            
+            final customBuilt = widget.flutterAppOptions.builder != null
+                ? widget.flutterAppOptions.builder!(context, wrappedWithNotifications)
+                : wrappedWithNotifications;
+            
+            return customBuilt;
+          },
           supportedLocales: widget.flutterAppOptions.supportedLocales,
           localizationsDelegates:
               widget.flutterAppOptions.localizationDelegates,
@@ -160,15 +171,10 @@ class _DartWayAppWidgetState extends ConsumerState<_DartWayApp> {
       },
     );
 
-    // 👇 оборачиваем routerApp во wrapper, если он есть
-    final wrappedApp =
-        widget.appWrapper != null
-            ? widget.appWrapper!(context, routerApp)
-            : routerApp;
+    final wrappedApp = widget.appWrapper != null
+        ? widget.appWrapper!(context, routerApp)
+        : routerApp;
 
-    return DwNotificationsListener(
-      handlers: {DwUiNotification: DwUiNotificationHandler()},
-      child: wrappedApp,
-    );
+    return wrappedApp;
   }
 }
