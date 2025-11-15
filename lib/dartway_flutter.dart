@@ -8,9 +8,12 @@ export 'src/dw_app/configs/dw_flutter_app_options.dart';
 export 'src/dw_app/configs/dw_routing_config.dart';
 export 'src/dw_app/configs/dw_telegram_web_app_config.dart';
 export 'src/dw_app/dw.dart';
-export 'src/dw_app/dw_app.dart';
+export 'src/dw_app/dw_app_runner.dart';
+export 'src/dw_app/dw_material_app.dart';
 // Notifications
 export 'src/notifications/domain/dw_ui_notification.dart';
+export 'src/notifications/ui/dw_notifications_listener.dart';
+export 'src/notifications/ui/dw_ui_notification_handler.dart';
 export 'src/ui_kit/base_widgets/dw_button/dw_button.dart';
 export 'src/ui_kit/base_widgets/dw_button/dw_button_style_preset.dart';
 export 'src/ui_kit/base_widgets/dw_button/dw_button_style_preset_extension.dart';
