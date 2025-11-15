@@ -9,7 +9,6 @@ class DwFlutterAppOptions {
   final ScrollBehavior? scrollBehavior;
   final String? restorationScopeId;
   final bool debugShowCheckedModeBanner;
-  final List<Locale> supportedLocales;
 
   final LocaleResolutionCallback? localeResolutionCallback;
   final LocaleListResolutionCallback? localeListResolutionCallback;
@@ -23,7 +22,6 @@ class DwFlutterAppOptions {
     ScrollBehavior? scrollBehavior,
     this.restorationScopeId,
     this.debugShowCheckedModeBanner = false,
-    this.supportedLocales = const [Locale('en')],
     this.localeResolutionCallback,
     this.localeListResolutionCallback,
     this.localizationDelegates = const [

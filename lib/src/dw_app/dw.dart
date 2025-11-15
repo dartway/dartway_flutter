@@ -21,6 +21,8 @@ class _Dw {
   final services = _DwServices._();
   final navigation = _DwNavigation._();
 
+  List<Locale> get supportedLocales => _config.supportedLocales;
+
   Future<bool> init(DwConfig config) async {
     await services._init(config: config);
 
