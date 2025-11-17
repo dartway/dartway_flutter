@@ -1,4 +1,4 @@
-import 'package:dartway_flutter/dartway_flutter.dart';
+import 'package:dartway_flutter/src/private/dw_singleton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletonizer/skeletonizer.dart';
