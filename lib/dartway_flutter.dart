@@ -1,15 +1,15 @@
 // lib/dartway_flutter.dart
 // Core app functionality
+
+// Recommended UI packages
 export 'package:conditional_parent_widget/conditional_parent_widget.dart';
 
-export 'src/dw_app/configs/dw_app_loading_options.dart';
-export 'src/dw_app/configs/dw_config.dart';
-export 'src/dw_app/configs/dw_flutter_app_options.dart';
-export 'src/dw_app/configs/dw_routing_config.dart';
-export 'src/dw_app/configs/dw_telegram_web_app_config.dart';
-export 'src/dw_app/dw.dart';
-export 'src/dw_app/dw_app_runner.dart';
-export 'src/dw_app/dw_material_app.dart';
+// DwApp configuration
+export 'src/dw/configs/dw_config.dart';
+export 'src/dw/configs/dw_telegram_web_app_config.dart';
+export 'src/dw/dw.dart';
+// App initialization
+export 'src/dw_app_runner/dw_app_runner.dart';
 // Notifications
 export 'src/notifications/domain/dw_ui_notification.dart';
 export 'src/notifications/ui/dw_notifications_listener.dart';

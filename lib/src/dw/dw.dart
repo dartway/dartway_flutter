@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dartway_flutter/dartway_flutter.dart';
 import 'package:dartway_flutter/src/notifications/service/dw_notifications_controller.dart';
+import 'package:dartway_flutter/src/private/dw_singleton.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,36 +12,23 @@ part 'parts/dw_navigation.dart';
 part 'parts/dw_notifications.dart';
 part 'parts/dw_services.dart';
 
-final dw = _Dw();
+class DwFlutter {
+  DwFlutter({required DwConfig config}) : _config = config {
+    setDwInstance(this);
+  }
 
-class _Dw {
-  late final DwConfig _config;
-  bool isInitialized = false;
+  final DwConfig _config;
 
   final notify = _DwNotifications._();
   final services = _DwServices._();
   final navigation = _DwNavigation._();
 
-  List<Locale> get supportedLocales => _config.supportedLocales;
-
-  Future<bool> init(DwConfig config) async {
-    await services._init(config: config);
-
-    _config = config;
-
-    isInitialized = true;
-
-    return isInitialized;
+  Future<void> init() async {
+    await services._init(config: _config);
   }
 
-  void handleError(Object error, StackTrace stackTrace) {
-    if (!isInitialized) {
-      debugPrint(error.toString());
-      debugPrint(stackTrace.toString());
-    } else {
+  void handleError(Object error, StackTrace stackTrace) =>
       _config.globalErrorHandler?.call(error, stackTrace);
-    }
-  }
 
   bool get isDefaultModelsGetterSetUp => _config.defaultModelGetter != null;
 
@@ -49,7 +37,7 @@ class _Dw {
 
     if (getter == null) {
       throw StateError(
-        'DwToolkit.defaultModelGetter is not set. '
+        'DwFlutter.defaultModelGetter is not set. '
         'Please provide it in DwConfig when initializing DwApp',
       );
     }
@@ -77,28 +65,4 @@ class _Dw {
       onError: onError,
     );
   }
-
-  // DwCallback contextCall<T>(
-  //   BuildContext context,
-  //   FutureOr<T> Function() action, {
-  //   required FutureOr<void> Function(
-  //     BuildContext mountedContext,
-  //     T actionResult,
-  //   )?
-  //   followUpIfMountedAction,
-  //   String? onSuccessNotification,
-  //   FutureOr<DwUiNotification> Function(T actionResult)?
-  //   customNotificationBuilder,
-  //   String? onErrorNotification,
-  //   void Function(Object error, StackTrace stackTrace)? onError,
-  // }) {
-  //   return DwCallback<T>.create(
-  //     action,
-  //     onSuccessNotification: onSuccessNotification,
-  //     customNotificationBuilder: customNotificationBuilder,
-  //     onErrorNotification: onErrorNotification,
-  //     onError: onError,
-  //     followUpIfMounted: followUpIfMountedAction,
-  //   );
-  // }
 }

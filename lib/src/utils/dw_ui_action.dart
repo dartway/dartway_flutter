@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dartway_flutter/dartway_flutter.dart';
+import 'package:dartway_flutter/src/private/dw_singleton.dart';
 import 'package:flutter/material.dart';
 
 /// UI-aware async action with error handling, notifications,
