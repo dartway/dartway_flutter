@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dartway_flutter/dartway_flutter.dart';
 import 'package:flutter/material.dart';
 
+import '../../../private/dw_singleton.dart';
 import 'private/dw_default_button_types.dart';
 
 class DwButton extends StatelessWidget {
