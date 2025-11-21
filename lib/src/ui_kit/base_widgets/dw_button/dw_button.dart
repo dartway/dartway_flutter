@@ -18,6 +18,7 @@ class DwButton extends StatelessWidget {
   final double? height;
   final bool unfocusOnTap;
   final bool requireValidation;
+  final String? validationNotifyText;
 
   const DwButton(
     Widget body, {
@@ -31,6 +32,7 @@ class DwButton extends StatelessWidget {
     this.height,
     this.unfocusOnTap = true,
     this.requireValidation = false,
+    this.validationNotifyText,
   }) : _label = null,
        _body = body,
        _style = stylePreset,
@@ -47,6 +49,7 @@ class DwButton extends StatelessWidget {
     this.height,
     this.unfocusOnTap = true,
     this.requireValidation = false,
+    this.validationNotifyText,
   }) : _label = label,
        _body = null,
        _type = DwDefaultButtonType.primary,
@@ -63,6 +66,7 @@ class DwButton extends StatelessWidget {
     this.height,
     this.unfocusOnTap = true,
     this.requireValidation = false,
+    this.validationNotifyText,
   }) : _label = label,
        _body = null,
        _type = DwDefaultButtonType.secondary,
@@ -79,6 +83,7 @@ class DwButton extends StatelessWidget {
     this.height,
     this.unfocusOnTap = true,
     this.requireValidation = false,
+    this.validationNotifyText,
   }) : _label = label,
        _body = null,
        _type = DwDefaultButtonType.text,
@@ -99,10 +104,14 @@ class DwButton extends StatelessWidget {
                     FocusScope.of(context).unfocus();
                   }
 
-                  if (!requireValidation ||
-                      (Form.maybeOf(context)?.validate() ?? false)) {
-                    dwCallback!.call(context);
+                  if (requireValidation && !(Form.maybeOf(context)?.validate() ?? false)) {
+                    if ((validationNotifyText ?? '').isNotEmpty) {
+                      dw.notify.error(validationNotifyText!);
+                    }
+                    return;
                   }
+
+                  dwCallback!.call(context);
                 },
         showProgress: showProgress,
         child: Row(
